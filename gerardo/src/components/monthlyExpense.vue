@@ -11,10 +11,10 @@
     <h2>Viewing Month: {{ month }}</h2>
 
     <expense-list
-      :expenses="expenseByMonth(month)"
+      :expenses="thisMonthsExpenses"
     />
 
-    {{ totalExpenses }}
+    <h2>Gasto total del mes: {{ totalExpenses }}</h2>
 
     <expense-form
       :expense="editingExpense"
