@@ -3,7 +3,6 @@
     class="expenseData"
     v-if="expense && mode === 'list'"
   >
-    <div>id: {{ expense.id }}</div>
     <div>Nombre: {{ expense.name }}</div>
     <div>Value: {{ expense.value }}</div>
     <div v-if="expense.disabled">Deshabilitado</div>

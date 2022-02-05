@@ -15,7 +15,7 @@
         :expenses="expensesCurrentMonth"
       />
 
-      <h2>Gasto total del mes: {{ totalExpenses }}</h2>
+      <h2>Gasto total del mes: ARS{{ totalExpenses }} | USD{{ totalExpenses / exchangeValues.blue.value_sell }}</h2>
     </div>
 
     <expense-form
@@ -47,10 +47,12 @@ export default {
   data() {
     return {
       editingExpense: {},
+      exchangeValues: null,
     }
   },
   mounted() {
     this.checkRecurrentExpenses();
+    this.getExchangeValues();
   },
   computed: {
     ...mapGetters([
@@ -93,6 +95,11 @@ export default {
         }
       })
     },
+    getExchangeValues() {
+      fetch('https://api.bluelytics.com.ar/v2/latest')
+      .then(response => response.json())
+      .then(data => this.exchangeValues = data)
+    }
   },
 }
 </script>
