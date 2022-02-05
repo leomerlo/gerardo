@@ -18,3 +18,5 @@ export { Timestamp }
 db.settings({ timestampsInSnapshots: true })
 
 export default db;
+
+export const expensesCollection = db.collection('expenses');

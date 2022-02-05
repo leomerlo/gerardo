@@ -1,17 +1,34 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { vuexfireMutations, firestoreAction } from 'vuexfire'
+import { expensesCollection } from '@/db'
 
 Vue.use(Vuex)
 
-const store = new Vuex.Store({
+export default new Vuex.Store({
   state: {
-    count: 0
+    expenses: []
   },
   mutations: {
-    increment (state) {
-      state.count++
+    ...vuexfireMutations,
+  },
+  actions: {
+    setExpenses: firestoreAction(
+      ({ bindFirestoreRef }) => {
+        bindFirestoreRef('expenses', expensesCollection)
+      }
+    ),
+    addExpense: firestoreAction((context, payload) => {
+      return expensesCollection.add(payload)
+    }),
+    deleteExpense: firestoreAction((context, payload) => {
+      console.log(`Deleting book ${payload.expenseId}`)
+      return expensesCollection.doc(payload).delete()
+    }),
+  },
+  getters: {
+    allExpenses: (state) => {
+      return state.expenses;
     }
   }
-})
-
-export default store;
+});
