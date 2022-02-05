@@ -7,11 +7,11 @@
         v-for="expense in expenses"
         :key="expense.id"
       >
-        {{ expense.name }}
-        {{ expense.value }}
-        {{ expense.recurrent }}
-
-        <button @click="deleteExpense(expense.id)">Eliminar</button>
+        <div>Nombre: {{ expense.name }}</div>
+        <div>Mes: {{ expense.month }}</div>
+        <div>Value: {{ expense.value }}</div>
+        <div>Recurrent: {{ expense.recurrent }}</div>
+        <div><button @click="deleteExpense(expense.id)">Eliminar</button></div>
       </li>
     </ul>
     <div v-else>
@@ -32,6 +32,11 @@ export default {
   computed: {
     areExpensesAvailable: function(){
       return this.expenses.length > 0;
+    }
+  },
+  methods: {
+    deleteExpense: function(expenseId) {
+      this.$store.dispatch('deleteExpense', expenseId);
     }
   }
 }

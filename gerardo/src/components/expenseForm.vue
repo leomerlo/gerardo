@@ -29,6 +29,15 @@
         />
       </div>
       <div>
+        <label for="recurrent">Es gasto recurrente?</label>
+        <input
+          type="checkbox"
+          name="recurrent"
+          id="recurrent"
+          v-model="newExpense.recurrent"
+        />
+      </div>
+      <div v-if="!newExpense.recurrent">
         <label for="month">Mes:</label>
         <input
           type="number"
@@ -38,15 +47,6 @@
           required
           max="12"
           min="1"
-        />
-      </div>
-      <div>
-        <label for="recurrent">Es gasto recurrente?</label>
-        <input
-          type="checkbox"
-          name="recurrent"
-          id="recurrent"
-          v-model="newExpense.recurrent"
         />
       </div>
       <div>
@@ -68,7 +68,7 @@ export default {
         name: null,
         value: null,
         month: null,
-        recurrent: null,
+        recurrent: false,
       }
     }
   },
@@ -80,17 +80,21 @@ export default {
         return false;
       }
 
-      if (this.newExpense.month > 12 || this.newExpense.month < 1) {
+      if (!this.newExpense.recurrent && (this.newExpense.month > 12 || this.newExpense.month < 1)) {
         this.formError.error = true;
         this.formError.message = 'El mes está fuera de rango'
         return false;
       }
 
+      // Los gastos recurrentes no tienen mes asociado
+      if (this.newExpense.recurrent) {
+        this.newExpense.month = null;
+      }
+
       this.$store.dispatch('addExpense', this.newExpense);
+
+      this.$emit('createdExpense');
     },
-    deleteExpense: function(expenseId) {
-      this.$store.dispatch('deleteExpense', expenseId);
-    }
   }
 }
 </script>

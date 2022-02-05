@@ -22,7 +22,6 @@ export default new Vuex.Store({
       return expensesCollection.add(payload)
     }),
     deleteExpense: firestoreAction((context, payload) => {
-      console.log(`Deleting book ${payload.expenseId}`)
       return expensesCollection.doc(payload).delete()
     }),
   },
@@ -30,5 +29,11 @@ export default new Vuex.Store({
     allExpenses: (state) => {
       return state.expenses;
     },
+    recurrentExpenses: (state) => {
+      return state.expenses.filter((e) => e.recurrent);
+    },
+    nonRecurrentExpenses: (state) => {
+      return state.expenses.filter((e) => !e.recurrent);
+    }
   }
 });
