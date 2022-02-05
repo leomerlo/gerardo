@@ -29,6 +29,6 @@ export default new Vuex.Store({
   getters: {
     allExpenses: (state) => {
       return state.expenses;
-    }
+    },
   }
 });
