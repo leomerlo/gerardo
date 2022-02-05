@@ -1,6 +1,6 @@
 <template>
   <form
-      @submit.prevent="addExpense"
+      @submit.prevent="submitExpense"
     >
       <div
         class="formStatus"
@@ -14,7 +14,8 @@
           type="text"
           name="name"
           id="name"
-          v-model="newExpense.name"
+          v-model="expenseData.name"
+          :disabled="expenseData.recurrentId"
           required
         />
       </div>
@@ -24,7 +25,7 @@
           type="number"
           name="value"
           id="value"
-          v-model="newExpense.value"
+          v-model="expenseData.value"
           required
         />
       </div>
@@ -34,19 +35,30 @@
           type="checkbox"
           name="recurrent"
           id="recurrent"
-          v-model="newExpense.recurrent"
+          v-model="expenseData.recurrent"
         />
       </div>
-      <div v-if="!newExpense.recurrent">
+      <div v-if="!expenseData.recurrent">
         <label for="month">Mes:</label>
         <input
           type="number"
           name="month"
           id="month"
-          v-model="newExpense.month"
+          v-model="expenseData.month"
           required
           max="12"
           min="1"
+        />
+      </div>
+      <div
+        v-if="expenseData.disabled"
+      >
+        <label for="disabled">Deshabilitado</label>
+        <input
+          type="checkbox"
+          name="disabled"
+          id="disabled"
+          v-model="expenseData.disabled"
         />
       </div>
       <div>
@@ -64,7 +76,8 @@ export default {
         error: false,
         message: '',
       },
-      newExpense: {
+      expenseData: {
+        id: null,
         name: null,
         value: null,
         month: null,
@@ -72,30 +85,73 @@ export default {
       }
     }
   },
+  props: {
+    month: {
+      type: Number,
+    },
+    expense: {
+      type: Object
+    },
+    mode: {
+      type: String,
+      default: 'add'
+    }
+  },
+  mounted() {
+    this.setEditMode();
+  },
+  computed: {
+    isEditMode: function() {
+      return this.mode === 'edit';
+    },
+  },
   methods: {
+    submitExpense: function(){
+      if(this.isEditMode) {
+        this.updateExpense();
+      } else {
+        this.addExpense();
+      }
+    },
     addExpense: function(){
-      if (this.newExpense.name === '' || this.newExpense.value === '' || this.newExpense.month === '') {
+      if (this.expenseData.name === '' || this.expenseData.value === '' || this.expenseData.month === '') {
         this.formError.error = true;
         this.formError.message = 'Hay campos requeridos vacios'
         return false;
       }
 
-      if (!this.newExpense.recurrent && (this.newExpense.month > 12 || this.newExpense.month < 1)) {
+      if (!this.expenseData.recurrent && (this.expenseData.month > 12 || this.expenseData.month < 1)) {
         this.formError.error = true;
         this.formError.message = 'El mes está fuera de rango'
         return false;
       }
 
       // Los gastos recurrentes no tienen mes asociado
-      if (this.newExpense.recurrent) {
-        this.newExpense.month = null;
+      if (this.expenseData.recurrent) {
+        this.expenseData.month = null;
       }
 
-      this.$store.dispatch('addExpense', this.newExpense);
-
+      this.$store.dispatch('addExpense', this.expenseData);
       this.$emit('createdExpense');
     },
-  }
+    updateExpense: function(){
+      // If we edit an expense coming from a recurrent, we un-link them
+      if (this.expenseData.recurrentId) {
+        this.expenseData.linked = null;
+      }
+
+      this.$store.dispatch('updateExpense', this.expenseData);
+      this.$emit('updatedExpense', this.expenseData);
+    },
+    setEditMode: function(){
+      if (this.isEditMode) {
+        this.expenseData = {
+          ...this.expense,
+          id: this.expense.id
+        }
+      }
+    },
+  },
 }
 </script>
 
