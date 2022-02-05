@@ -11,8 +11,10 @@
     <h2>Viewing Month: {{ month }}</h2>
 
     <expense-list
-      :expenses="expenseByMonth(month)"
+      :expenses="thisMonthsExpenses"
     />
+
+    <h2>Gasto total del mes: {{ totalExpenses }}</h2>
 
     <expense-form
       @created-expense="checkRecurrentExpenses()"
@@ -47,6 +49,16 @@ export default {
       'nonRecurrentExpenses',
       'recurrentExpenses',
     ]),
+    totalExpenses: function() {
+      let total = 0;
+      this.thisMonthsExpenses.forEach((e) => {
+        total += parseInt(e.value);
+      });
+      return total;
+    },
+    thisMonthsExpenses: function(){
+      return this.expenseByMonth(this.month);
+    }
   },
   methods: {
     expenseByMonth(month) {
@@ -59,12 +71,7 @@ export default {
       // Validamos que los recurrent existan para el mes
       this.recurrentExpenses.forEach((e) => {
         let exists = false;
-        console.log('Recurrente', e.name, ' valor ', exists);
-        console.log(this.month);
-        console.log(this.expenseByMonth(this.month));
-        this.expenseByMonth(this.month).forEach((f) => {
-          console.log('Recurrent ', e.name);
-          console.log('Monthly ', f.name);
+        this.thisMonthsExpenses.forEach((f) => {
           if (f.name === e.name) {
             exists = true;
           }
@@ -82,7 +89,7 @@ export default {
           this.$store.dispatch('addExpense', expense);
         }
       })
-    }
+    },
   },
 }
 </script>
