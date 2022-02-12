@@ -68,6 +68,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
   name: "expenseForm",
   data() {
@@ -82,6 +83,7 @@ export default {
         value: null,
         month: null,
         recurrent: false,
+        uid: false,
       }
     }
   },
@@ -101,6 +103,9 @@ export default {
     this.setEditMode();
   },
   computed: {
+    ...mapGetters([
+      'getUser'
+    ]),
     isEditMode: function() {
       return this.mode === 'edit';
     },
@@ -130,6 +135,9 @@ export default {
       if (this.expenseData.recurrent) {
         this.expenseData.month = null;
       }
+
+      // We add the user ID
+      this.expenseData.uid = this.getUser.uid;
 
       this.$store.dispatch('addExpense', this.expenseData).then(() => {
         this.$emit('createdExpense');
