@@ -6,7 +6,7 @@
     <div>Nombre: {{ expense.name }}</div>
     <div>Value: {{ expense.value }}</div>
     <div
-      v-if="expense.recurrentId"
+      v-if="expense.recurrentId || expense.month"
     >
       Pagado:
       <input
