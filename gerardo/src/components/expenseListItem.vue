@@ -5,6 +5,16 @@
   >
     <div>Nombre: {{ expense.name }}</div>
     <div>Value: {{ expense.value }}</div>
+    <div
+      v-if="expense.recurrentId"
+    >
+      Pagado:
+      <input
+        type="checkbox"
+        v-model="expense.paid"
+        @change="completeExpense(expense)"
+      />
+    </div>
     <div v-if="expense.disabled">Deshabilitado</div>
     <div v-if="expense.disabled"><button @click="enableExpense(expense)">Habilitar</button></div>
     <div v-if="!expense.disabled"><button @click="editExpense(expense)">Editar</button></div>
@@ -111,6 +121,9 @@ export default {
         throw new Error('There was an issue updating the expense dependencies', e);
       }
     },
+    completeExpense: function(expense){
+      this.$store.dispatch('updateExpense', expense);
+    }
   },
 }
 </script>
