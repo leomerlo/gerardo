@@ -99,9 +99,13 @@ export default {
       })
     },
     getExchangeValues() {
-      fetch('https://api.bluelytics.com.ar/v2/latest')
-      .then(response => response.json())
-      .then(data => this.exchangeValues = data)
+      try {
+        fetch('https://api.bluelytics.com.ar/v2/latest')
+        .then(response => response.json())
+        .then(data => this.exchangeValues = data)
+      } catch(e) {
+        return null;
+      }
     }
   },
 }
