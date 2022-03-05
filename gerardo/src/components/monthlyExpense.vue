@@ -1,20 +1,22 @@
 <template>
   <div>
-    <h1>Hola</h1>
+    <div v-if="allExpenses.length > 0">
+      <h1>Hola</h1>
 
-    <h2>Gastos recurrentes</h2>
-    
-    <expense-list
-      :expenses="recurrentExpenses"
-    />
+      <h2>Gastos recurrentes</h2>
+      
+      <expense-list
+        :expenses="recurrentExpenses"
+      />
 
-    <h2>Viewing Month: {{ month }}</h2>
+      <h2>Viewing Month: {{ month }}</h2>
 
-    <expense-list
-      :expenses="expensesCurrentMonth"
-    />
+      <expense-list
+        :expenses="expensesCurrentMonth"
+      />
 
-    <h2>Gasto total del mes: {{ totalExpenses }}</h2>
+      <h2>Gasto total del mes: {{ totalExpenses }}</h2>
+    </div>
 
     <expense-form
       :expense="editingExpense"
@@ -86,6 +88,7 @@ export default {
           }
         })
         if (!exists) { 
+          e.month = this.month;
           this.$store.dispatch('cloneExpense', e);
         }
       })

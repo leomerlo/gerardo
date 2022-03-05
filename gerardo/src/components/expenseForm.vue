@@ -131,8 +131,9 @@ export default {
         this.expenseData.month = null;
       }
 
-      this.$store.dispatch('addExpense', this.expenseData);
-      this.$emit('createdExpense');
+      this.$store.dispatch('addExpense', this.expenseData).then(() => {
+        this.$emit('createdExpense');
+      });
     },
     updateExpense: function(){
       // If we edit an expense coming from a recurrent, we un-link them

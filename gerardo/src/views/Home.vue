@@ -3,7 +3,6 @@
     <h1>Gerardo</h1>
 
     <monthly-expense
-      v-if="allExpenses.length > 0"
       :month="getMonth"
       :key="getMonth"
     />

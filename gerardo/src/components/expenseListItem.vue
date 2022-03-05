@@ -5,10 +5,7 @@
   >
     <div>id: {{ expense.id }}</div>
     <div>Nombre: {{ expense.name }}</div>
-    <div>Mes: {{ expense.month }}</div>
     <div>Value: {{ expense.value }}</div>
-    <div>Recurrent: {{ expense.recurrent }}</div>
-    <div>Linkeado: {{ expense.linked || 'no' }} - {{ expense.recurrentId }}</div>
     <div v-if="expense.disabled">Deshabilitado</div>
     <div v-if="expense.disabled"><button @click="enableExpense(expense)">Habilitar</button></div>
     <div v-if="!expense.disabled"><button @click="editExpense(expense)">Editar</button></div>
@@ -62,8 +59,29 @@ export default {
       this.updatedRecurrentDependencies(expense);
     },
     deleteExpense: function (expense) {
-      // If the expense is linked, we add the disabled prop
-      this.$store.dispatch('deleteExpense', expense.id);
+      if (!expense.recurrentId) {
+
+        try {
+          // We unlink all previous month's dependencies
+          const olderDependencies = this.nonRecurrentExpenses.filter((e) => e.month <= moment(new Date).format('M'));
+          olderDependencies.forEach((e) => {
+            this.$store.dispatch('unlinkExpense', e.id);
+          })
+
+          // We remove all future dependencies
+          const newerDependencies = this.nonRecurrentExpenses.filter((e) => e.month > moment(new Date).format('M'));
+          newerDependencies.forEach((e) => {
+            this.$store.dispatch('deleteExpense', e.id);
+          })
+        } catch (e) {
+          throw new Error("There was a problem removing the linking, please try again");
+        }
+
+        // We remove the expense
+        this.$store.dispatch('deleteExpense', expense.id);
+      } else {
+        throw new Error('You can\'t eliminate linked dependencies');
+      }
     },
     disableExpense: function(expense){
       this.$store.dispatch('disableExpense', expense.id);
