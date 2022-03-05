@@ -11,7 +11,7 @@
     <h2>Viewing Month: {{ month }}</h2>
 
     <expense-list
-      :expenses="thisMonthsExpenses"
+      :expenses="expensesCurrentMonth"
     />
 
     <h2>Gasto total del mes: {{ totalExpenses }}</h2>
@@ -80,7 +80,7 @@ export default {
       // Validamos que los recurrent existan para el mes
       this.recurrentExpenses.forEach((e) => {
         let exists = false;
-        this.expenseByMonth(this.month).forEach((f) => {
+        this.expensesCurrentMonth.forEach((f) => {
           if (f.name === e.name) {
             exists = true;
           }
