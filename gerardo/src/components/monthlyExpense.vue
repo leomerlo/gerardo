@@ -15,7 +15,7 @@
         :expenses="expensesCurrentMonth"
       />
 
-      <h2>Gasto total del mes: ARS{{ totalExpenses }} | USD{{ totalExpenses / exchangeValues.blue.value_sell }}</h2>
+      <h2>Gasto total del mes: ARS{{ totalExpenses }} | USD{{ totalExpenses / exchangeValues.blue.value_sell || 1 }}</h2>
     </div>
 
     <expense-form
