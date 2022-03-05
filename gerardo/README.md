@@ -1,5 +1,7 @@
 # gerardo
 
+Gerardo is a test application to help out with payments and invoices.
+
 ## Project setup
 ```
 yarn install
