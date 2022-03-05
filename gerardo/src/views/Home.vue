@@ -10,6 +10,9 @@
 
     <button @click="prevMonth"> Atras </button>
     <button @click="nextMonth"> Adelante </button>
+
+    <button @click="clearData"> Limpiar Data </button>
+
   </div>
 </template>
 
@@ -42,6 +45,13 @@ export default {
     },
     prevMonth(){
       this.monthTracker--;
+    },
+    clearData() {
+      this.allExpenses.filter((e) => {
+        if(e.recurrentId) {
+          this.$store.dispatch('deleteExpense',e.id);
+        }
+      })
     }
   }
 }

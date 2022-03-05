@@ -8,7 +8,7 @@
     <div>Mes: {{ expense.month }}</div>
     <div>Value: {{ expense.value }}</div>
     <div>Recurrent: {{ expense.recurrent }}</div>
-    <div>Linkeado: {{ expense.recurrentId || 'no' }}</div>
+    <div>Linkeado: {{ expense.linked || 'no' }} - {{ expense.recurrentId }}</div>
     <div v-if="expense.disabled">Deshabilitado</div>
     <div v-if="expense.disabled"><button @click="enableExpense(expense)">Habilitar</button></div>
     <div v-if="!expense.disabled"><button @click="editExpense(expense)">Editar</button></div>

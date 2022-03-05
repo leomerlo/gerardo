@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import moment from 'moment'
 import { vuexfireMutations, firestoreAction } from 'vuexfire'
 import { expensesCollection } from '@/db'
 
@@ -25,20 +26,31 @@ export default new Vuex.Store({
       return expensesCollection.doc(id).delete()
     }),
     updateExpense: firestoreAction((context, payload) => {
-      expensesCollection
+      return expensesCollection
         .doc(payload.id)
         .set(payload)
     }),
     disableExpense: firestoreAction((context, id) => {
-      expensesCollection
+      return expensesCollection
         .doc(id)
         .update('disabled', true)
     }), 
     enableExpense: firestoreAction((context, id) => {
-      expensesCollection
+      return expensesCollection
         .doc(id)
         .update('disabled', false)
-    }), 
+    }),
+    cloneExpense: firestoreAction((context, payload) => {
+      const clonedExpense = {
+        ...payload,
+        id: null,
+        recurrentId: payload.id,
+        linked: true,
+        recurrent: false,
+        month: parseInt(moment(new Date).format('M'))
+      }
+      return expensesCollection.add(clonedExpense)
+    }),
   },
   getters: {
     allExpenses: (state) => {

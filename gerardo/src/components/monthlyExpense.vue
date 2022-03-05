@@ -85,15 +85,8 @@ export default {
             exists = true;
           }
         })
-        if (!exists) {
-          const expense = {
-            name: e.name,
-            value: e.value,
-            recurrent: false,
-            recurrentId: e.id,
-            month: parseInt(this.month),
-          } 
-          this.$store.dispatch('addExpense', expense);
+        if (!exists) { 
+          this.$store.dispatch('cloneExpense', e);
         }
       })
     },

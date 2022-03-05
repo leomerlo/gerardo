@@ -15,6 +15,7 @@
           name="name"
           id="name"
           v-model="expenseData.name"
+          :disabled="expenseData.recurrentId"
           required
         />
       </div>
@@ -136,7 +137,7 @@ export default {
     updateExpense: function(){
       // If we edit an expense coming from a recurrent, we un-link them
       if (this.expenseData.recurrentId) {
-        this.expenseData.recurrentId = null;
+        this.expenseData.linked = null;
       }
 
       this.$store.dispatch('updateExpense', this.expenseData);
