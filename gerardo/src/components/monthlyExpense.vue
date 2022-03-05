@@ -14,8 +14,12 @@
       :expenses="expenseByMonth(month)"
     />
 
+    {{ totalExpenses }}
+
     <expense-form
-      @created-expense="checkRecurrentExpenses()"
+      :expense="editingExpense"
+      :month="month"
+      @createdExpense="checkRecurrentExpenses"
     />
   </div>
 </template>
@@ -38,6 +42,11 @@ export default {
       required: true,
     }
   },
+  data() {
+    return {
+      editingExpense: {},
+    }
+  },
   mounted() {
     this.checkRecurrentExpenses();
   },
@@ -47,6 +56,18 @@ export default {
       'nonRecurrentExpenses',
       'recurrentExpenses',
     ]),
+    totalExpenses: function(){
+      let total = 0;
+      this.expensesCurrentMonth.forEach((e) => {
+        if(!e.disabled) {
+          total += parseInt(e.value);
+        }
+      });
+      return total;
+    },
+    expensesCurrentMonth: function(){
+      return this.expenseByMonth(this.month);
+    }
   },
   methods: {
     expenseByMonth(month) {
@@ -59,30 +80,23 @@ export default {
       // Validamos que los recurrent existan para el mes
       this.recurrentExpenses.forEach((e) => {
         let exists = false;
-        console.log('Recurrente', e.name, ' valor ', exists);
-        console.log(this.month);
-        console.log(this.expenseByMonth(this.month));
         this.expenseByMonth(this.month).forEach((f) => {
-          console.log('Recurrent ', e.name);
-          console.log('Monthly ', f.name);
           if (f.name === e.name) {
             exists = true;
           }
         })
         if (!exists) {
-          // Si no existen los creamos
-          console.log(e.name, ' creado');
-          // Convertimos el gasto en local
           const expense = {
             name: e.name,
             value: e.value,
             recurrent: false,
+            recurrentId: e.id,
             month: parseInt(this.month),
           } 
           this.$store.dispatch('addExpense', expense);
         }
       })
-    }
+    },
   },
 }
 </script>

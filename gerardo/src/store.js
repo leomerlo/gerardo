@@ -21,9 +21,24 @@ export default new Vuex.Store({
     addExpense: firestoreAction((context, payload) => {
       return expensesCollection.add(payload)
     }),
-    deleteExpense: firestoreAction((context, payload) => {
-      return expensesCollection.doc(payload).delete()
+    deleteExpense: firestoreAction((context, id) => {
+      return expensesCollection.doc(id).delete()
     }),
+    updateExpense: firestoreAction((context, payload) => {
+      expensesCollection
+        .doc(payload.id)
+        .set(payload)
+    }),
+    disableExpense: firestoreAction((context, id) => {
+      expensesCollection
+        .doc(id)
+        .update('disabled', true)
+    }), 
+    enableExpense: firestoreAction((context, id) => {
+      expensesCollection
+        .doc(id)
+        .update('disabled', false)
+    }), 
   },
   getters: {
     allExpenses: (state) => {
