@@ -17,7 +17,7 @@
     </div>
     <div v-if="expense.disabled">Deshabilitado</div>
     <div v-if="expense.disabled"><button @click="enableExpense(expense)">Habilitar</button></div>
-    <div v-if="!expense.disabled"><button @click="editExpense(expense)">Editar</button></div>
+    <div v-if="!expense.disabled"><button class="editExpense" @click="editExpense(expense)">Editar</button></div>
     <!-- If the expense is linked, we add the disabled prop -->
     <div v-if="expense.recurrentId && !expense.disabled"><button @click="disableExpense(expense)">Deshabilitar</button></div>
     <div v-if="!expense.recurrentId"><button @click="deleteExpense(expense)">Eliminar</button></div>
@@ -67,6 +67,15 @@ export default {
       this.mode = "list";
       this.updatedRecurrentDependencies(expense);
     },
+    disableExpense: function(expense){
+      this.$store.dispatch('disableExpense', expense.id);
+    },
+    enableExpense: function(expense){
+      this.$store.dispatch('enableExpense', expense.id);
+    },
+    completeExpense: function(expense){
+      this.$store.dispatch('updateExpense', expense);
+    },
     deleteExpense: function (expense) {
       if (!expense.recurrentId) {
 
@@ -92,19 +101,13 @@ export default {
         throw new Error('You can\'t eliminate linked dependencies');
       }
     },
-    disableExpense: function(expense){
-      this.$store.dispatch('disableExpense', expense.id);
-    },
-    enableExpense: function(expense){
-      this.$store.dispatch('enableExpense', expense.id);
-    },
     updatedRecurrentDependencies(expense){
       if( !expense.recurrent ){
         return false;
       }
 
       try {
-        const recurrentId = expense.id;
+        const recurrentId = parseInt(expense.id);
         const dependencies = this.nonRecurrentExpenses.filter((e) => e.recurrentId === recurrentId && e.month >= parseInt(moment(new Date).format('M')));
         dependencies.forEach((e) => {
           const updatedExpense = {
@@ -121,9 +124,6 @@ export default {
         throw new Error('There was an issue updating the expense dependencies', e);
       }
     },
-    completeExpense: function(expense){
-      this.$store.dispatch('updateExpense', expense);
-    }
   },
 }
 </script>

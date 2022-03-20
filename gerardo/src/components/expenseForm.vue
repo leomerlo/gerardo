@@ -119,6 +119,11 @@ export default {
       }
     },
     addExpense: function(){
+      this.formError = {
+        error: false,
+        message: null,
+      };
+      
       if (this.expenseData.name === '' || this.expenseData.value === '' || this.expenseData.month === '') {
         this.formError.error = true;
         this.formError.message = 'Hay campos requeridos vacios'

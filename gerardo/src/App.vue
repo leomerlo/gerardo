@@ -1,12 +1,13 @@
 <template>
   <div id="app">
-    <router-view/>
     <button
+      id="signOut"
       v-if="isUserLogged"
       @click="signOutUser"
     >
       Sign out
     </button>
+    <router-view/>
   </div>
 </template>
 
