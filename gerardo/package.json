@@ -5,8 +5,10 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "test:unit": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint"
+    "test": "vue-cli-service test:unit",
+    "test-hook": "vue-cli-service test:unit --changedSince=@{push}",
+    "lint": "vue-cli-service lint",
+    "prepare": "cd .. && husky install gerardo/.husky"
   },
   "dependencies": {
     "core-js": "^3.6.5",
@@ -29,6 +31,9 @@
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
+    "husky": "^7.0.4",
+    "is-ci": "^3.0.1",
+    "prepush-if-changed": "^1.0.8",
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {
