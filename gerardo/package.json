@@ -8,7 +8,7 @@
     "test": "vue-cli-service test:unit",
     "test-hook": "vue-cli-service test:unit --changedSince=@{push}",
     "lint": "vue-cli-service lint",
-    "prepare": "is-ci || cd .. && husky install gerardo/.husky"
+    "prepare": "cd .. && husky install gerardo/.husky"
   },
   "dependencies": {
     "core-js": "^3.6.5",
