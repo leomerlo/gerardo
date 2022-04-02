@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import router from './router';
-// import { query, where } from '@firebase/firestore';
 import { vuexfireMutations, firestoreAction } from 'vuexfire'
 import {
   getAuth,
@@ -30,7 +29,7 @@ export default new Vuex.Store({
   actions: {
     setExpenses: firestoreAction(
       (context) => {
-        const userExpenses = expensesRef.where('uid','==',context.state.user.uid);
+        const userExpenses = expensesRef.where('uid','==',context.state.user.uid).orderBy('paid', 'asc');
         context.bindFirestoreRef('expenses', userExpenses);
       }
     ),
