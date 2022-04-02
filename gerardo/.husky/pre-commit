@@ -3,4 +3,4 @@
 
 cd gerardo
 yarn lint
-yarn test
+yarn test-hook

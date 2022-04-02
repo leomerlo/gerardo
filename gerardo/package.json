@@ -6,6 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test": "vue-cli-service test:unit",
+    "test-hook": "vue-cli-service test:unit --changedSince=@{push}",
     "lint": "vue-cli-service lint",
     "prepare": "is-ci || cd .. && husky install gerardo/.husky"
   },
@@ -32,6 +33,7 @@
     "eslint-plugin-vue": "^6.2.2",
     "husky": "^7.0.4",
     "is-ci": "^3.0.1",
+    "prepush-if-changed": "^1.0.8",
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {
