@@ -9,6 +9,7 @@
       >
         <expense-list-item
           :expense="expense"
+          :editable="editable"
           @editExpense="editExpense"
         />
       </li>
@@ -31,6 +32,10 @@ export default {
     expenses: {
       type: Array,
       required: true
+    },
+    editable: {
+      type: Boolean,
+      default: false,
     }
   },
   data() {

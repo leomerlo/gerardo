@@ -5,22 +5,24 @@
   >
     <div>Nombre: {{ expense.name }}</div>
     <div>Value: {{ expense.value }}</div>
-    <div
-      v-if="expense.recurrentId || expense.month"
-    >
-      Pagado:
-      <input
-        type="checkbox"
-        v-model="expense.paid"
-        @change="completeExpense(expense)"
-      />
+    <div v-if="editable">
+      <div
+        v-if="expense.recurrentId || expense.month"
+      >
+        Pagado:
+        <input
+          type="checkbox"
+          v-model="expense.paid"
+          @change="completeExpense(expense)"
+        />
+      </div>
+      <div v-if="expense.disabled">Deshabilitado</div>
+      <div v-if="expense.disabled"><button @click="enableExpense(expense)">Habilitar</button></div>
+      <div v-if="!expense.disabled"><button class="editExpense" @click="editExpense(expense)">Editar</button></div>
+      <!-- If the expense is linked, we add the disabled prop -->
+      <div v-if="expense.recurrentId && !expense.disabled"><button @click="disableExpense(expense)">Deshabilitar</button></div>
+      <div v-if="!expense.recurrentId"><button @click="deleteExpense(expense)">Eliminar</button></div>
     </div>
-    <div v-if="expense.disabled">Deshabilitado</div>
-    <div v-if="expense.disabled"><button @click="enableExpense(expense)">Habilitar</button></div>
-    <div v-if="!expense.disabled"><button class="editExpense" @click="editExpense(expense)">Editar</button></div>
-    <!-- If the expense is linked, we add the disabled prop -->
-    <div v-if="expense.recurrentId && !expense.disabled"><button @click="disableExpense(expense)">Deshabilitar</button></div>
-    <div v-if="!expense.recurrentId"><button @click="deleteExpense(expense)">Eliminar</button></div>
     
   </div>
   <expense-form
@@ -46,6 +48,10 @@ export default {
     expense: {
       type: Object,
       required: true,
+    },
+    editable: {
+      type: Boolean,
+      default: false,
     }
   },
   data() {

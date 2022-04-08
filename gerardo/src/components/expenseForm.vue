@@ -82,6 +82,7 @@ export default {
         name: null,
         value: null,
         month: null,
+        year: null,
         recurrent: false,
         uid: false,
         paid: false,
