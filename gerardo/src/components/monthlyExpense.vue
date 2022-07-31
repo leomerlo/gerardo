@@ -3,11 +3,22 @@
     <div v-if="allExpenses.length > 0">
       <h1>Hola</h1>
 
+      <button @click="toggleRecurrent">
+        <span v-if="visibleRecurrent">Esconder recurrentes</span>
+        <span v-else>Mostrar recurrentes</span>
+      </button>
+
+      <div
+        v-if="visibleRecurrent"
+      >
+
       <h2>Gastos recurrentes</h2>
       
       <expense-list
         :expenses="recurrentExpenses"
       />
+
+      </div>
 
       <h2>Viewing Month: {{ month }}</h2>
 
@@ -48,6 +59,7 @@ export default {
     return {
       editingExpense: {},
       exchangeValues: null,
+      visibleRecurrent: false,
     }
   },
   mounted() {
@@ -106,6 +118,9 @@ export default {
       } catch(e) {
         return null;
       }
+    },
+    toggleRecurrent() {
+      this.visibleRecurrent = !this.visibleRecurrent;
     }
   },
 }
