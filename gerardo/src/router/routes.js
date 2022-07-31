@@ -1,12 +1,12 @@
-import Home from '../views/Home.vue';
+import HomePage from '../views/Home.vue';
+import LoginPage from '../views/Login.vue';
 import Monthly from '../views/Monthly.vue';
-import Login from '../views/Login.vue';
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home,
+    name: 'HomePage',
+    component: HomePage,
     meta: {
       requiresAuth: true,
     }
@@ -21,8 +21,8 @@ const routes = [
   },
   {
     path: '/login',
-    name: 'Login',
-    component: Login,
+    name: 'LoginPage',
+    component: LoginPage,
   },
 ];
 
