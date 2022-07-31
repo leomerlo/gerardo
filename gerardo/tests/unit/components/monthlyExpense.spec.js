@@ -64,6 +64,7 @@ describe('monthlyExpense', () => {
   it('should clone the recurrent expenses for the month', async () => {
     advanceTo(new Date(2022, 2, 27, 0, 0, 0));
 
+    // eslint-disable-next-line
     const wrapper = shallowMount(monthlyExpense, {
       store,
       localVue,
@@ -94,6 +95,7 @@ describe('monthlyExpense', () => {
     
     const testGetExchangeValues = jest.spyOn(monthlyExpense.methods, 'getExchangeValues')
 
+    // eslint-disable-next-line
     const wrapper = shallowMount(monthlyExpense, {
       store,
       localVue,

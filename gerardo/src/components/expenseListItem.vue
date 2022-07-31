@@ -11,8 +11,7 @@
       Pagado:
       <input
         type="checkbox"
-        v-model="expense.paid"
-        @change="completeExpense(expense)"
+        v-model="paidModel"
       />
     </div>
     <div v-if="expense.disabled">Deshabilitado</div>
@@ -57,6 +56,12 @@ export default {
     ...mapGetters([
       'nonRecurrentExpenses'
     ]),
+    paidModel: {
+      get () { return this.expense.paid },
+      set () {
+        this.completeExpense()
+      },
+    },
   },
   methods: {
     editExpense: function (expense) {
@@ -73,8 +78,12 @@ export default {
     enableExpense: function(expense){
       this.$store.dispatch('enableExpense', expense.id);
     },
-    completeExpense: function(expense){
-      this.$store.dispatch('updateExpense', expense);
+    completeExpense: function(){
+      const updatedExpense = {
+        ...this.expense,
+      };
+      updatedExpense.paid = !this.expense.paid;
+      this.$store.dispatch('updateExpense', updatedExpense);
     },
     deleteExpense: function (expense) {
       if (!expense.recurrentId) {

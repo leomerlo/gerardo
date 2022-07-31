@@ -84,6 +84,7 @@ export default {
         month: null,
         recurrent: false,
         uid: false,
+        paid: false,
       }
     }
   },
