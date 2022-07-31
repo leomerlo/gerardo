@@ -10,13 +10,14 @@
     <button @click="prevMonth"> Atras </button>
     <button @click="nextMonth"> Adelante </button>
 
-    <button @click="clearData"> Limpiar Data </button>
+    <button @click="clearData" disabled> Limpiar Data </button>
 
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import router from '../router';
 import monthlyExpense from '@/components/monthlyExpense';
 
 export default {
@@ -39,10 +40,10 @@ export default {
   },
   methods: {
     nextMonth(){
-      this.monthTracker++;
+      router.push({ name: 'MonthlyView', params: { month: this.getMonth + 1 }})
     },
     prevMonth(){
-      this.monthTracker--;
+      router.push({ name: 'MonthlyView', params: { month: this.getMonth - 1 }})
     },
     clearData() {
       this.allExpenses.filter((e) => {
