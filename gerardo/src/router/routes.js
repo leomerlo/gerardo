@@ -1,6 +1,6 @@
 import HomePage from '../views/Home.vue';
 import LoginPage from '../views/Login.vue';
-import Monthly from '../views/Monthly.vue';
+import MonthlyView from '../views/Monthly.vue';
 
 const routes = [
   {
@@ -13,8 +13,8 @@ const routes = [
   },
   {
     path: '/month/:month',
-    name: 'Monthly',
-    component: Monthly,
+    name: 'MonthlyView',
+    component: MonthlyView,
     meta: {
       requiresAuth: true,
     }
