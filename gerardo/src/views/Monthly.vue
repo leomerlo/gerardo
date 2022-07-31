@@ -20,7 +20,7 @@ import { mapGetters } from 'vuex';
 import monthlyExpense from '@/components/monthlyExpense';
 
 export default {
-  name: 'Home',
+  name: 'MonthlyView',
   components: {
     monthlyExpense,
   },

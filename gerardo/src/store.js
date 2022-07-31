@@ -24,7 +24,7 @@ export default new Vuex.Store({
     setUser(state, payload) {
       state.user = payload;
       localStorage.setItem('gerardo-user', state.user.stringify);
-    }
+    },
   },
   actions: {
     setExpenses: firestoreAction(

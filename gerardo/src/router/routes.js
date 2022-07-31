@@ -1,28 +1,28 @@
-import Home from '../views/Home.vue';
-import Monthly from '../views/Monthly.vue';
-import Login from '../views/Login.vue';
+import HomePage from '../views/Home.vue';
+import LoginPage from '../views/Login.vue';
+import MonthlyView from '../views/Monthly.vue';
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home,
+    name: 'HomePage',
+    component: HomePage,
     meta: {
       requiresAuth: true,
     }
   },
   {
     path: '/month/:month',
-    name: 'Monthly',
-    component: Monthly,
+    name: 'MonthlyView',
+    component: MonthlyView,
     meta: {
       requiresAuth: true,
     }
   },
   {
     path: '/login',
-    name: 'Login',
-    component: Login,
+    name: 'LoginPage',
+    component: LoginPage,
   },
 ];
 
