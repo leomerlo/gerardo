@@ -34,6 +34,7 @@ export default new Vuex.Store({
       }
     ),
     addExpense: firestoreAction((context, payload) => {
+      console.warn('addExpense');
       return expensesRef.add(payload)
     }),
     deleteExpense: firestoreAction((context, id) => {
@@ -109,7 +110,7 @@ export default new Vuex.Store({
       return state.expenses.filter((e) => e.recurrent);
     },
     nonRecurrentExpenses: (state) => {
-      return state.expenses.filter((e) => !e.recurrent);
+      return state.expenses.filter((e) => e.recurrent === false);
     }
   }
 });

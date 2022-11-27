@@ -28,7 +28,9 @@ onAuthStateChanged(auth, (user) => {
     store.commit('setUser', user);
     store.dispatch('setExpenses');
   } else {
-    router.push('Login');
+    router.push({
+      name: 'LoginPage'
+    });
   }
 });
 
