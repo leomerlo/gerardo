@@ -44,10 +44,20 @@
           type="number"
           name="month"
           id="month"
-          v-model="expenseData.month"
+          v-model="expenseMonth"
           required
           max="12"
           min="1"
+        />
+      </div>
+      <div v-if="!expenseData.recurrent">
+        <label for="month">Año:</label>
+        <input
+          type="number"
+          name="year"
+          id="year"
+          v-model="expenseYear"
+          required
         />
       </div>
       <div
@@ -81,6 +91,7 @@ export default {
         id: null,
         name: null,
         value: null,
+        year: null,
         month: null,
         recurrent: false,
         uid: false,
@@ -89,6 +100,9 @@ export default {
     }
   },
   props: {
+    year: {
+      type: Number,
+    },
     month: {
       type: Number,
     },
@@ -102,6 +116,7 @@ export default {
   },
   mounted() {
     this.setEditMode();
+    this.resetForm();
   },
   computed: {
     ...mapGetters([
@@ -110,6 +125,24 @@ export default {
     isEditMode: function() {
       return this.mode === 'edit';
     },
+    expenseMonth: {
+      get () {
+        const d = new Date();
+        return this.expenseData.month || d.getMonth() + 1;
+      },
+      set (value) {
+        this.expenseData.month = value;
+      },
+    },
+    expenseYear: {
+      get () {
+        const d = new Date();
+        return this.expenseData.year || d.getFullYear();
+      },
+      set (value) {
+        this.expenseData.year = value;
+      },
+    }
   },
   methods: {
     submitExpense: function(){
@@ -124,8 +157,8 @@ export default {
         error: false,
         message: null,
       };
-      
-      if (this.expenseData.name === '' || this.expenseData.value === '' || this.expenseData.month === '') {
+
+      if (this.isEmpty(this.expenseData.name) || this.isEmpty(this.expenseData.value) || this.isEmpty(this.expenseData.month)) {
         this.formError.error = true;
         this.formError.message = 'Hay campos requeridos vacios'
         return false;
@@ -146,8 +179,12 @@ export default {
       this.expenseData.uid = this.getUser.uid;
 
       this.$store.dispatch('addExpense', this.expenseData).then(() => {
+        this.resetForm();
         this.$emit('createdExpense');
       });
+    },
+    isEmpty(value) {
+      return value === '' || value === null;
     },
     updateExpense: function(){
       // If we edit an expense coming from a recurrent, we un-link them
@@ -166,6 +203,16 @@ export default {
         }
       }
     },
+    resetForm: function() {
+      this.expenseData.id = null;
+      this.expenseData.name = null;
+      this.expenseData.value = null;
+      this.expenseData.year = this.expenseYear;
+      this.expenseData.month = this.expenseMonth;
+      this.expenseData.recurrent = false;
+      this.expenseData.uid = false;
+      this.expenseData.paid = false;     
+    }
   },
 }
 </script>

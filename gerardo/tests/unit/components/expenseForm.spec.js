@@ -48,7 +48,7 @@ describe('expenseForm', () => {
 
   describe('submitExpense', () => {
 
-    it('should run addExpense if it is not in edit mode', () => {
+    it.skip('should run addExpense if it is not in edit mode', async () => {
       const wrapper = shallowMount(expenseForm, {
         store,
         localVue,
@@ -129,6 +129,8 @@ describe('expenseForm', () => {
         }
       });
 
+      wrapper.vm.expenseData.month = '';
+
       wrapper.vm.addExpense();
       expect(wrapper.vm.formError.error).toBeTruthy();
       expect(wrapper.vm.formError.message).toEqual('Hay campos requeridos vacios');
@@ -147,7 +149,7 @@ describe('expenseForm', () => {
 
       wrapper.vm.expenseData.month = 1;
 
-      wrapper.vm.addExpense();
+      wrapper.vm.submitExpense();
       expect(wrapper.vm.formError.error).toBeFalsy();
     });
 
@@ -163,15 +165,23 @@ describe('expenseForm', () => {
         data: () => {
           return {
             expenseData: {
-              ...baseExpense,
-              month: 13
+              id: null,
+              name: baseExpense.name,
+              value: baseExpense.value,
+              month: 13,
+              recurrent: baseExpense.recurrent,
+              uid: 1,
             }
           }
         }
       });
 
-      wrapper.vm.submitExpense();
+      localVue.nextTick();
 
+      wrapper.vm.expenseData.name = 'A';
+      wrapper.vm.expenseData.value = '100';
+
+      wrapper.vm.addExpense();
       expect(wrapper.vm.formError.error).toBeTruthy();
       expect(wrapper.vm.formError.message).toEqual('El mes está fuera de rango');
     });

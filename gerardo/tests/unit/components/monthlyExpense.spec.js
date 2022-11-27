@@ -30,6 +30,7 @@ describe('monthlyExpense', () => {
         {
           id: "2",
           month: 1,
+          year: 2022,
           name: "Mensual 1",
           recurrent: false,
           uid: "2",
@@ -38,6 +39,7 @@ describe('monthlyExpense', () => {
         {
           id: "3",
           month: 2,
+          year: 2022,
           name: "Mensual 2",
           recurrent: false,
           uid: "3",
@@ -69,7 +71,8 @@ describe('monthlyExpense', () => {
       store,
       localVue,
       propsData: {
-        month: 5
+        month: 5,
+        year: 2022
       }
     });
 
@@ -83,12 +86,13 @@ describe('monthlyExpense', () => {
       store,
       localVue,
       propsData: {
-        month: 1
+        month: 1,
+        year: 2022
       }
     });
 
     expect(wrapper.vm.allExpenses.length).toEqual(3);
-    expect(wrapper.vm.expenseByMonth.length).toEqual(1);
+    expect(wrapper.vm.expenseByMonth.length).toEqual(2);
   });
 
   it('should try to get exchangeValues on mounter', () => {
@@ -100,7 +104,8 @@ describe('monthlyExpense', () => {
       store,
       localVue,
       propsData: {
-        month: 1
+        month: 1,
+        year: 2022
       },
     });
 
