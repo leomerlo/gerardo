@@ -1,6 +1,7 @@
 <template>
   <div>
     <b-button @click="updateExpensesYear">Agregar año a las expensas</b-button>
+    <b-button @click="updateExpensesPaid">Agregar paid a las expensas</b-button>
   </div>
 </template>
 
@@ -22,6 +23,16 @@ export default {
           ...e
         };
         expense.year = 2022;
+        await this.$store.dispatch('updateExpense', expense);
+        console.log(`Expense ${expense.name}, ${expense.id} updated`);
+      })
+    },
+    updateExpensesPaid() {
+      this.allExpenses.filter(async (e) => {
+        const expense = {
+          ...e
+        };
+        expense.paid = false;
         await this.$store.dispatch('updateExpense', expense);
         console.log(`Expense ${expense.name}, ${expense.id} updated`);
       })

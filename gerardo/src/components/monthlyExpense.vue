@@ -92,6 +92,8 @@ export default {
       return this.nonRecurrentExpenses.filter((e) => ((parseInt(e.month) === parseInt(month)) && (parseInt(e.year) === parseInt(year))));
     },
     checkRecurrentExpenses(){
+      console.log('all: ', this.allExpenses);
+      console.log('recurrent: ',this.recurrentExpenses);
       if( this.month < parseInt(moment(new Date).format('M')) ) {
         return false;
       }
