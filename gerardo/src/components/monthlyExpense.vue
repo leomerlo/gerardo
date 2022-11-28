@@ -12,13 +12,13 @@
       />
     </div>
 
-    <div class="d-flex gap-2 mt-4 mb-4">
-      <b-button @click="toggleRecurrent" class="mt-4 mb-4">
+    <div class="d-flex gap-2 my-4">
+      <b-button @click="toggleRecurrent">
         <span v-if="visibleRecurrent">Esconder recurrentes</span>
         <span v-else>Mostrar recurrentes</span>
       </b-button>
 
-      <b-button @click="toggleNewForm" class="mt-4 mb-4">
+      <b-button @click="toggleNewForm">
         Agregar nuevo gasto
       </b-button>
     </div>
@@ -29,6 +29,7 @@
         <expense-form
           :year="year"
           :month="month"
+          @createdExpense="toggleNewForm"
           @cancelEdit="toggleNewForm"
         />
       </div>

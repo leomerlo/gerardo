@@ -37,18 +37,6 @@
         ></b-form-input>
       </b-form-group>
       <b-form-group
-        :id="`input-group-${expenseData.id}-recurrent-group`"
-        label="Es gasto recurrente?"
-        :label-for="`input-group-${expenseData.id}-recurrent`"
-      >
-        <b-form-checkbox
-          name="recurrent"
-          :id="`input-group-${expenseData.id}-recurrent`"
-          v-model="expenseData.recurrent"
-          :disabled="expenseData.linked"
-        ></b-form-checkbox>
-      </b-form-group>
-      <b-form-group
         :id="`input-group-${expenseData.id}-month-group`"
         label="Mes:"
         :label-for="`input-group-${expenseData.id}-month`"
@@ -79,6 +67,18 @@
         ></b-form-input>
       </b-form-group>
       <b-form-group
+        :id="`input-group-${expenseData.id}-recurrent-group`"
+        label="Es gasto recurrente?"
+        :label-for="`input-group-${expenseData.id}-recurrent`"
+      >
+        <b-form-checkbox
+          name="recurrent"
+          :id="`input-group-${expenseData.id}-recurrent`"
+          v-model="expenseData.recurrent"
+          :disabled="expenseData.linked"
+        ></b-form-checkbox>
+      </b-form-group>
+      <!-- <b-form-group
         :id="`input-group-${expenseData.id}-disabled-group`"
         label="Deshabilitado:"
         :label-for="`input-group-${expenseData.id}-disabled`"
@@ -88,7 +88,7 @@
           :id="`input-group-${expenseData.id}-disabled`"
           v-model="expenseData.disabled"
         ></b-form-checkbox>
-      </b-form-group>
+      </b-form-group> -->
       <div class="d-flex gap-2 mt-4">
         <b-button variant="primary" type="submit">Guardar</b-button>
         <b-button variant="light" @click="cancelEdit">Cancelar</b-button>
@@ -182,6 +182,8 @@ export default {
         return false;
       }
 
+      console.warn('month', this.expenseData);
+
       if (!this.expenseData.recurrent && (this.expenseData.month > 12 || this.expenseData.month < 1)) {
         this.formError.error = true;
         this.formError.message = 'El mes está fuera de rango'
@@ -191,6 +193,7 @@ export default {
       // Los gastos recurrentes no tienen mes asociado
       if (this.expenseData.recurrent) {
         this.expenseData.month = null;
+        this.expenseData.year = null;
       }
 
       // We add the user ID
@@ -218,14 +221,15 @@ export default {
         this.expenseData.id = this.expense.id;
         this.expenseData.name = this.expense.name;
         this.expenseData.value = this.expense.value;
-        this.expenseData.year = this.expenseYear;
-        this.expenseData.month = this.expenseMonth;
         this.expenseData.recurrentId = this.expense.recurrentId || null;
         this.expenseData.recurrent = this.expense.recurrent;
         this.expenseData.uid = this.expense.uid;
         this.expenseData.linked = this.expense.linked || null;
         this.expenseData.paid = this.expense.paid;
       }
+
+      this.expenseData.year = this.$route?.params.year;
+      this.expenseData.month = this.$route?.params.month;
     },
     resetForm: function() {
       this.expenseData.id = null;

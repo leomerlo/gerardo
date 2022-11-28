@@ -1,7 +1,19 @@
 <template>
   <div>
 
-    <h1>Hola, name esto es {{ this.getMonthName }}</h1>
+    <b-jumbotron class="my-3">
+      <template #header>
+        Hola, {{ getUser.displayName }}
+      </template>
+      <template #lead>
+        Esto es {{ getMonthName }}
+      </template>
+    </b-jumbotron>
+
+    <div class="d-flex justify-content-between my-4">
+      <b-button variant="primary" @click="() => { this.prevMonth(this.getYear, this.getMonth) }" id="prevMonth"><font-awesome-icon icon="fa-solid fa-angle-left" /> Mes anterior </b-button>
+      <b-button variant="primary" @click="() => { this.nextMonth(this.getYear, this.getMonth) }" id="nextMonth">Mes siguiente <font-awesome-icon icon="fa-solid fa-angle-right" /></b-button>
+    </div>
 
     <monthly-expense
       :month="getMonth"
@@ -9,11 +21,9 @@
       :key="getMonth"
     />
 
-    <div class="d-flex justify-content-between mt-4">
-
+    <div class="d-flex justify-content-between my-4">
       <b-button variant="primary" @click="() => { this.prevMonth(this.getYear, this.getMonth) }" id="prevMonth"><font-awesome-icon icon="fa-solid fa-angle-left" /> Mes anterior </b-button>
       <b-button variant="primary" @click="() => { this.nextMonth(this.getYear, this.getMonth) }" id="nextMonth">Mes siguiente <font-awesome-icon icon="fa-solid fa-angle-right" /></b-button>
-
     </div>
 
     <!-- <button @click="clearData"> Limpiar Data </button> -->
@@ -33,6 +43,7 @@ export default {
   computed: {
     ...mapGetters([
       'allExpenses',
+      'getUser',
     ]),
     getMonth() {
       return parseInt(this.$route?.params.month);
