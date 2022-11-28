@@ -1,18 +1,15 @@
 <template>
   <div>
-    <ul
+    <div
       v-if="areExpensesAvailable"
     >
-      <li
+      <expense-list-item
         v-for="expense in expenses"
         :key="expense.id"
-      >
-        <expense-list-item
-          :expense="expense"
-          @editExpense="editExpense"
-        />
-      </li>
-    </ul>
+        :expense="expense"
+        @editExpense="editExpense"
+      />
+    </div>
     <div v-else>
       No hay gastos para este mes.
     </div>
@@ -51,5 +48,7 @@ export default {
 </script>
 
 <style>
-
+  .card-group {
+    gap: 10px;
+  }
 </style>
