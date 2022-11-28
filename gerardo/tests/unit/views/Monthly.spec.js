@@ -1,9 +1,13 @@
 import Vuex from 'vuex';
+import BootstrapVue from 'bootstrap-vue';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { createLocalVue, shallowMount } from '@vue/test-utils';
 import MonthlyView from '@/views/Monthly.vue';
 
 const localVue = createLocalVue()
 localVue.use(Vuex);
+localVue.use(BootstrapVue)
+localVue.use(FontAwesomeIcon);
 
 describe('monthlyView', () => {  
   it('should not go past month 12', async () => {
