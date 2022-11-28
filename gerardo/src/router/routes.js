@@ -1,6 +1,7 @@
 import HomePage from '../views/Home.vue';
 import LoginPage from '../views/Login.vue';
 import MonthlyView from '../views/Monthly.vue';
+import RunPage from '../views/RunPage.vue';
 
 const routes = [
   {
@@ -23,6 +24,11 @@ const routes = [
     path: '/login',
     name: 'LoginPage',
     component: LoginPage,
+  },
+  {
+    path: '/run',
+    name: 'RunPage',
+    component: RunPage,
   },
 ];
 

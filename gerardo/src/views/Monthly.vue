@@ -11,8 +11,8 @@
 
     <div class="d-flex justify-content-between mt-4">
 
-      <b-button variant="primary" @click="() => { this.prevMonth(this.getYear, this.getMonth).bind(this) }" id="prevMonth"><font-awesome-icon icon="fa-solid fa-angle-left" /> Mes anterior </b-button>
-      <b-button variant="primary" @click="() => { this.nextMonth(this.getYear, this.getMonth).bind(this) }" id="nextMonth">Mes siguiente <font-awesome-icon icon="fa-solid fa-angle-right" /></b-button>
+      <b-button variant="primary" @click="() => { this.prevMonth(this.getYear, this.getMonth) }" id="prevMonth"><font-awesome-icon icon="fa-solid fa-angle-left" /> Mes anterior </b-button>
+      <b-button variant="primary" @click="() => { this.nextMonth(this.getYear, this.getMonth) }" id="nextMonth">Mes siguiente <font-awesome-icon icon="fa-solid fa-angle-right" /></b-button>
 
     </div>
 
