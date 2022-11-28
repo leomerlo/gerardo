@@ -84,7 +84,7 @@ export default {
       'recurrentExpenses',
     ]),
     expensesCurrentMonth: function(){
-      return this.expenseByMonth(this.month, this.year);
+      return this.expenseByMonth(this.$route?.params.month, this.$route?.params.year);
     },
   },
   methods: {
@@ -92,8 +92,6 @@ export default {
       return this.nonRecurrentExpenses.filter((e) => ((parseInt(e.month) === parseInt(month)) && (parseInt(e.year) === parseInt(year))));
     },
     checkRecurrentExpenses(){
-      console.log('all: ', this.allExpenses);
-      console.log('recurrent: ',this.recurrentExpenses);
       if( this.month < parseInt(moment(new Date).format('M')) ) {
         return false;
       }
@@ -106,8 +104,8 @@ export default {
           }
         })
         if (!exists) { 
-          e.month = this.month;
-          e.year = this.year;
+          e.month = this.$route?.params.month;
+          e.year = this.$route?.params.year;
           this.$store.dispatch('cloneExpense', e);
         }
       })

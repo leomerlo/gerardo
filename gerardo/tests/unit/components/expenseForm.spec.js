@@ -7,7 +7,7 @@ import expenseForm from '@/components/expenseForm.vue'
 const localVue = createLocalVue()
 localVue.use(Vuex)
 localVue.use(BootstrapVue)
-localVue.use(FontAwesomeIcon);
+localVue.component('font-awesome-icon', FontAwesomeIcon)
 
 /*
 global.fetch = jest.fn(() =>

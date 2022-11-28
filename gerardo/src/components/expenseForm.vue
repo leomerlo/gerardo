@@ -58,7 +58,7 @@
           type="number"
           name="month"
           :id="`input-group-${expenseData.id}-month`"
-          v-model="expenseMonth"
+          v-model="expenseData.month"
           required
           max="12"
           min="1"
@@ -74,10 +74,8 @@
           type="number"
           name="year"
           :id="`input-group-${expenseData.id}-year`"
-          v-model="expenseYear"
+          v-model="expenseData.year"
           required
-          max="12"
-          min="1"
         ></b-form-input>
       </b-form-group>
       <b-form-group
@@ -217,14 +215,15 @@ export default {
     },
     setEditMode: function(){
       if (this.isEditMode) {
+        this.expenseData.id = this.expense.id;
         this.expenseData.name = this.expense.name;
         this.expenseData.value = this.expense.value;
         this.expenseData.year = this.expenseYear;
         this.expenseData.month = this.expenseMonth;
-        this.expenseData.recurrentId = this.expense.recurrentId;
+        this.expenseData.recurrentId = this.expense.recurrentId || null;
         this.expenseData.recurrent = this.expense.recurrent;
         this.expenseData.uid = this.expense.uid;
-        this.expenseData.linked = this.expense.linked;
+        this.expenseData.linked = this.expense.linked || null;
         this.expenseData.paid = this.expense.paid;
       }
     },

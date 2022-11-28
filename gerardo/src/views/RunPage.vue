@@ -2,6 +2,7 @@
   <div>
     <b-button @click="updateExpensesYear">Agregar año a las expensas</b-button>
     <b-button @click="updateExpensesPaid">Agregar paid a las expensas</b-button>
+    <b-button @click="removeMonthlyExpenses">Remover expenses del mes</b-button>
   </div>
 </template>
 
@@ -36,6 +37,11 @@ export default {
         await this.$store.dispatch('updateExpense', expense);
         console.log(`Expense ${expense.name}, ${expense.id} updated`);
       })
+    },
+    removeMonthlyExpenses() {
+      const month = prompt('Mes?');
+      const year = prompt('Year?');
+      console.log(this.expenseByMonth(month, year));
     }
   }
 }

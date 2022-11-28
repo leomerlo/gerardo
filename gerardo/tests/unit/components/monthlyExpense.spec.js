@@ -10,7 +10,7 @@ const localVue = createLocalVue()
 localVue.use(VueRouter)
 localVue.use(Vuex)
 localVue.use(BootstrapVue)
-localVue.use(FontAwesomeIcon);
+localVue.component('font-awesome-icon', FontAwesomeIcon)
 
 global.fetch = jest.fn(() =>
   Promise.resolve({

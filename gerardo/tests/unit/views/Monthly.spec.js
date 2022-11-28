@@ -7,7 +7,7 @@ import MonthlyView from '@/views/Monthly.vue';
 const localVue = createLocalVue()
 localVue.use(Vuex);
 localVue.use(BootstrapVue)
-localVue.use(FontAwesomeIcon);
+localVue.component('font-awesome-icon', FontAwesomeIcon)
 
 describe('monthlyView', () => {  
   it('should not go past month 12', async () => {

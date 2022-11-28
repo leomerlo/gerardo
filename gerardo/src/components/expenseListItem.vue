@@ -26,8 +26,8 @@
       v-else
     >
       <expense-form
-        :year="expense.year"
-        :month="expense.month"
+        :year="parseInt(expense.year)"
+        :month="parseInt(expense.month)"
         :expense="expense"
         mode="edit"
         @updatedExpense="updatedExpense"
