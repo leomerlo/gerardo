@@ -1,12 +1,16 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import { advanceTo } from 'jest-date-mock';
 import Vuex from 'vuex'
+import BootstrapVue from 'bootstrap-vue';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import VueRouter from 'vue-router'
 import monthlyExpense from '@/components/monthlyExpense.vue'
 
 const localVue = createLocalVue()
 localVue.use(VueRouter)
 localVue.use(Vuex)
+localVue.use(BootstrapVue)
+localVue.use(FontAwesomeIcon);
 
 global.fetch = jest.fn(() =>
   Promise.resolve({
@@ -93,23 +97,5 @@ describe('monthlyExpense', () => {
 
     expect(wrapper.vm.allExpenses.length).toEqual(3);
     expect(wrapper.vm.expenseByMonth.length).toEqual(2);
-  });
-
-  it('should try to get exchangeValues on mounter', () => {
-    
-    const testGetExchangeValues = jest.spyOn(monthlyExpense.methods, 'getExchangeValues')
-
-    // eslint-disable-next-line
-    const wrapper = shallowMount(monthlyExpense, {
-      store,
-      localVue,
-      propsData: {
-        month: 1,
-        year: 2022
-      },
-    });
-
-    expect(testGetExchangeValues).toHaveBeenCalled();
-
   });
 });

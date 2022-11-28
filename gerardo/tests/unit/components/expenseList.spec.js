@@ -1,9 +1,13 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
+import BootstrapVue from 'bootstrap-vue';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import expenseList from '@/components/expenseList.vue'
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
+localVue.use(BootstrapVue)
+localVue.use(FontAwesomeIcon);
 
 /*
 global.fetch = jest.fn(() =>
