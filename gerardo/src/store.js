@@ -34,7 +34,6 @@ export default new Vuex.Store({
       }
     ),
     addExpense: firestoreAction((context, payload) => {
-      console.warn('addExpense');
       return expensesRef.add(payload)
     }),
     deleteExpense: firestoreAction((context, id) => {
