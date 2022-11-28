@@ -4,11 +4,12 @@
 
     <monthly-expense
       :month="getMonth"
+      :year="getYear"
       :key="getMonth"
     />
 
-    <button @click="prevMonth"> Atras </button>
-    <button @click="nextMonth"> Adelante </button>
+    <button @click="() => { this.prevMonth(this.getYear, this.getMonth).bind(this) }" id="prevMonth"> Atras </button>
+    <button @click="() => { this.nextMonth(this.getYear, this.getMonth).bind(this) }" id="nextMonth"> Adelante </button>
 
     <button @click="clearData" disabled> Limpiar Data </button>
 
@@ -17,7 +18,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import router from '../router';
 import monthlyExpense from '@/components/monthlyExpense';
 
 export default {
@@ -25,31 +25,51 @@ export default {
   components: {
     monthlyExpense,
   },
-  data() {
-    return {
-      monthTracker: 0,
-    }
-  },
   computed: {
     ...mapGetters([
       'allExpenses',
     ]),
     getMonth() {
-      return parseInt(this.$route.params.month);
+      return parseInt(this.$route?.params.month);
+    },
+    getYear() {
+      return parseInt(this.$route?.params.year);
     }
   },
   methods: {
-    nextMonth(){
-      router.push({ name: 'MonthlyView', params: { month: this.getMonth + 1 }})
+    nextMonth(year, month){
+      if(this.getMonth < 12) {
+        month++;
+      } else {
+        year++;
+        month = 1;
+      }
+      this.$router.push({
+        name: 'MonthlyView',
+        params: {
+          year,
+          month
+        } 
+      });
     },
-    prevMonth(){
-      router.push({ name: 'MonthlyView', params: { month: this.getMonth - 1 }})
+    prevMonth(year, month){
+      if(this.getMonth > 1) {
+        month--;
+      } else {
+        year--;
+        month = 12;
+      }
+      this.$router.push({
+        name: 'MonthlyView',
+        params: {
+          year,
+          month
+        } 
+      });
     },
     clearData() {
       this.allExpenses.filter((e) => {
-        if(e.recurrentId) {
-          this.$store.dispatch('deleteExpense',e.id);
-        }
+        this.$store.dispatch('deleteExpense',e.id);
       })
     }
   },

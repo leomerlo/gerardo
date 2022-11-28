@@ -12,7 +12,7 @@ const routes = [
     }
   },
   {
-    path: '/month/:month',
+    path: '/monthly/:year/:month',
     name: 'MonthlyView',
     component: MonthlyView,
     meta: {

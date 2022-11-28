@@ -1,8 +1,6 @@
 <template>
   <div>
     <div v-if="allExpenses.length > 0">
-      <h1>Hola</h1>
-
       <button @click="toggleRecurrent">
         <span v-if="visibleRecurrent">Esconder recurrentes</span>
         <span v-else>Mostrar recurrentes</span>
@@ -53,6 +51,10 @@ export default {
     month: {
       type: Number,
       required: true,
+    },
+    year: {
+      type: Number,
+      required: true,
     }
   },
   data() {
@@ -82,15 +84,15 @@ export default {
       return total;
     },
     expensesCurrentMonth: function(){
-      return this.expenseByMonth(this.month);
+      return this.expenseByMonth(this.month, this.year);
     },
     totalExpensesConversion: function(){
       return this.exchangeValues?.blue.value_sell;
     }
   },
   methods: {
-    expenseByMonth(month) {
-      return this.nonRecurrentExpenses.filter((e) => parseInt(e.month) === parseInt(month));
+    expenseByMonth(month, year) {
+      return this.nonRecurrentExpenses.filter((e) => ((parseInt(e.month) === parseInt(month)) && (parseInt(e.year) === parseInt(year))));
     },
     checkRecurrentExpenses(){
       if( this.month < parseInt(moment(new Date).format('M')) ) {
@@ -106,6 +108,7 @@ export default {
         })
         if (!exists) { 
           e.month = this.month;
+          e.year = this.year;
           this.$store.dispatch('cloneExpense', e);
         }
       })

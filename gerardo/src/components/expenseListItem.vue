@@ -24,6 +24,7 @@
   </div>
   <expense-form
     v-else
+    :year="expense.year"
     :month="expense.month"
     :expense="expense"
     mode="edit"
