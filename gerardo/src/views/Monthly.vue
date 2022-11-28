@@ -1,6 +1,7 @@
 <template>
   <div>
-    <h1>Gerardo</h1>
+
+    <h1>Hola, name esto es {{ this.getMonthName }}</h1>
 
     <monthly-expense
       :month="getMonth"
@@ -8,10 +9,14 @@
       :key="getMonth"
     />
 
-    <button @click="() => { this.prevMonth(this.getYear, this.getMonth).bind(this) }" id="prevMonth"> Atras </button>
-    <button @click="() => { this.nextMonth(this.getYear, this.getMonth).bind(this) }" id="nextMonth"> Adelante </button>
+    <div class="d-flex justify-content-between mt-4">
 
-    <button @click="clearData"> Limpiar Data </button>
+      <b-button variant="primary" @click="() => { this.prevMonth(this.getYear, this.getMonth).bind(this) }" id="prevMonth"><font-awesome-icon icon="fa-solid fa-angle-left" /> Mes anterior </b-button>
+      <b-button variant="primary" @click="() => { this.nextMonth(this.getYear, this.getMonth).bind(this) }" id="nextMonth">Mes siguiente <font-awesome-icon icon="fa-solid fa-angle-right" /></b-button>
+
+    </div>
+
+    <!-- <button @click="clearData"> Limpiar Data </button> -->
 
   </div>
 </template>
@@ -34,6 +39,60 @@ export default {
     },
     getYear() {
       return parseInt(this.$route?.params.year);
+    },
+    getMonthName() {
+      let name = '';
+      switch(this.getMonth) {
+        case 1:
+          name = 'Enero';
+          break;
+        
+        case 2:
+          name = 'Febrero';
+          break;
+
+        case 3:
+          name = 'Marzo';
+          break;
+      
+        case 4:
+          name = 'Abril';
+          break;
+
+        case 5:
+          name = 'Mayo';
+          break;
+
+        case 6:
+          name = 'Junio';
+          break;
+
+        case 7:
+          name = 'Julio';
+          break;
+
+        case 8:
+          name = 'Agosto';
+          break;
+
+        case 9:
+          name = 'Septiembre';
+          break;
+
+        case 10:
+          name = 'Octubre';
+          break;
+
+        case 11:
+          name = 'Noviembre';
+          break;
+
+        case 12:
+          name = 'Diciembre';
+          break;
+      }
+
+      return name;
     }
   },
   methods: {

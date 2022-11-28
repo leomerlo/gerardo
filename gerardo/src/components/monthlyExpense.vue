@@ -1,37 +1,45 @@
 <template>
-  <div>
-    <div v-if="allExpenses.length > 0">
-      <button @click="toggleRecurrent">
-        <span v-if="visibleRecurrent">Esconder recurrentes</span>
-        <span v-else>Mostrar recurrentes</span>
-      </button>
+  <div v-if="allExpenses.length > 0">
 
-      <div
-        v-if="visibleRecurrent"
-      >
+    <total-gastos :expenses="expensesCurrentMonth"/>
 
-      <h2>Gastos recurrentes</h2>
-      
-      <expense-list
-        :expenses="recurrentExpenses"
-      />
+    <div class="monthly-expenses">
 
-      </div>
-
-      <h2>Viewing Month: {{ month }}</h2>
+      <h2>Tus gastos del mes</h2>
 
       <expense-list
         :expenses="expensesCurrentMonth"
       />
-
-      <h2>Gasto total del mes: ARS{{ totalExpenses }} | USD{{ totalExpenses / totalExpensesConversion || 1 }}</h2>
     </div>
 
-    <expense-form
-      :expense="editingExpense"
-      :month="month"
-      @createdExpense="checkRecurrentExpenses"
-    />
+    <div class="d-flex gap-2 mt-4 mb-4">
+      <b-button @click="toggleRecurrent" class="mt-4 mb-4">
+        <span v-if="visibleRecurrent">Esconder recurrentes</span>
+        <span v-else>Mostrar recurrentes</span>
+      </b-button>
+
+      <b-button @click="toggleNewForm" class="mt-4 mb-4">
+        Agregar nuevo gasto
+      </b-button>
+    </div>
+
+    <b-collapse id="add-expense" class="mt-2" :visible="newForm">
+      <div class="monthly-expenses">
+        <h3>Agregar nuego gasto</h3>
+        <expense-form
+          :year="year"
+          :month="month"
+          @cancelEdit="toggleNewForm"
+        />
+      </div>
+    </b-collapse>
+
+    <div class="monthly-expenses" v-if="visibleRecurrent">
+      <h2>Gastos recurrentes</h2> 
+      <expense-list
+        :expenses="recurrentExpenses"
+      />
+    </div>
   </div>
 </template>
 
@@ -40,12 +48,14 @@ import { mapGetters } from 'vuex';
 import moment from 'moment';
 import expenseList from '@/components/expenseList';
 import expenseForm from '@/components/expenseForm';
+import totalGastos from '@/components/totalGastos.vue';
 
 export default {
   name: 'monthlyExpense',
   components: {
-    expenseForm,
-    expenseList
+    expenseList,
+    totalGastos,
+    expenseForm
   },
   props: {
     month: {
@@ -60,13 +70,12 @@ export default {
   data() {
     return {
       editingExpense: {},
-      exchangeValues: null,
       visibleRecurrent: false,
+      newForm: false,
     }
   },
   mounted() {
     this.checkRecurrentExpenses();
-    this.getExchangeValues();
   },
   computed: {
     ...mapGetters([
@@ -74,21 +83,9 @@ export default {
       'nonRecurrentExpenses',
       'recurrentExpenses',
     ]),
-    totalExpenses: function(){
-      let total = 0;
-      this.expensesCurrentMonth.forEach((e) => {
-        if(!e.disabled) {
-          total += parseInt(e.value);
-        }
-      });
-      return total;
-    },
     expensesCurrentMonth: function(){
       return this.expenseByMonth(this.month, this.year);
     },
-    totalExpensesConversion: function(){
-      return this.exchangeValues?.blue.value_sell;
-    }
   },
   methods: {
     expenseByMonth(month, year) {
@@ -113,22 +110,21 @@ export default {
         }
       })
     },
-    getExchangeValues() {
-      try {
-        fetch('https://api.bluelytics.com.ar/v2/latest')
-        .then(response => response.json())
-        .then(data => this.exchangeValues = data)
-      } catch(e) {
-        return null;
-      }
-    },
     toggleRecurrent() {
       this.visibleRecurrent = !this.visibleRecurrent;
+    },
+    toggleNewForm() {
+      this.newForm = !this.newForm;
     }
   },
 }
 </script>
 
-<style>
-
+<style lang="scss">
+  .monthly-expenses {
+    margin: 10px 0;
+    padding: 20px;
+    border-radius: 20px;
+    border: 1px solid $grey-300;
+  }
 </style>

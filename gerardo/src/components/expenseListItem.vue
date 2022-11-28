@@ -1,35 +1,40 @@
 <template>
   <div
-    class="expenseData"
-    v-if="expense && mode === 'list'"
+    class="expense-list-item"
   >
-    <div>Nombre: {{ expense.name }}</div>
-    <div>Value: {{ expense.value }}</div>
+    <div v-if="expense && mode === 'list'">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <input
+            class="paid-checkbox"
+            type="checkbox"
+            v-model="paidModel"
+            v-if="expense.recurrentId || expense.month"
+          />
+          <span class="name">{{ expense.name }}</span>
+          <span class="value">${{ expense.value }}</span>
+        </div>
+        <div class="d-flex gap-2 mt-2">
+          <b-button v-if="expense.disabled" variant="icon" @click="enableExpense(expense)"><font-awesome-icon icon="fa-solid fa-toggle-off" /></b-button>
+          <b-button v-if="!expense.disabled" variant="icon" @click="editExpense(expense)"><font-awesome-icon icon="fa-solid fa-pen" /></b-button>
+          <b-button v-if="expense.recurrentId && !expense.disabled" variant="icon" @click="disableExpense(expense)"><font-awesome-icon icon="fa-solid fa-toggle-on" /></b-button>
+          <b-button v-if="!expense.recurrentId" variant="icon" @click="deleteExpense(expense)"><font-awesome-icon icon="fa-solid fa-trash-can" /></b-button>
+        </div>
+      </div>
+    </div>
     <div
-      v-if="expense.recurrentId || expense.month"
+      v-else
     >
-      Pagado:
-      <input
-        type="checkbox"
-        v-model="paidModel"
+      <expense-form
+        :year="expense.year"
+        :month="expense.month"
+        :expense="expense"
+        mode="edit"
+        @updatedExpense="updatedExpense"
+        @cancelEdit="cancelEdit"
       />
     </div>
-    <div v-if="expense.disabled">Deshabilitado</div>
-    <div v-if="expense.disabled"><button @click="enableExpense(expense)">Habilitar</button></div>
-    <div v-if="!expense.disabled"><button class="editExpense" @click="editExpense(expense)">Editar</button></div>
-    <!-- If the expense is linked, we add the disabled prop -->
-    <div v-if="expense.recurrentId && !expense.disabled"><button @click="disableExpense(expense)">Deshabilitar</button></div>
-    <div v-if="!expense.recurrentId"><button @click="deleteExpense(expense)">Eliminar</button></div>
-    
   </div>
-  <expense-form
-    v-else
-    :year="expense.year"
-    :month="expense.month"
-    :expense="expense"
-    mode="edit"
-    @updatedExpense="updatedExpense"
-  />
 </template>
 
 <script>
@@ -68,6 +73,9 @@ export default {
     editExpense: function (expense) {
       this.mode = "edit";
       this.$emit('editExpense', expense);
+    },
+    cancelEdit: function() {
+      this.mode = "list";
     },
     updatedExpense: function(expense){
       this.mode = "list";
@@ -138,6 +146,28 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+  .expense-list-item {
+    border-bottom: 1px solid $grey-200;
+    padding: 10px;
 
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .paid-checkbox {
+    margin-right: 10px;
+  }
+
+  .name {
+    display: inline-block;
+    text-transform: uppercase;
+  }
+
+  .value {
+    display: inline-block;
+    font-weight: bold;
+    margin-left: 20px;
+  }
 </style>

@@ -1,10 +1,12 @@
 <template>
-  <div>
-    <h1>Gerardo</h1>
-    <p>Logueate para comenzar</p>
-    <button @click="loginUser">
-      Login
-    </button>
+  <div class="d-flex flex-column align-items-center justify-content-center vh-100 text-center">
+    <div class="container">
+      <h1>Gerardo</h1>
+      <p>Logueate para comenzar</p>
+      <b-button variant="primary" @click="loginUser">
+        Login
+      </b-button>
+    </div>
   </div>
 </template>
 

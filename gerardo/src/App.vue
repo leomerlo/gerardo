@@ -1,19 +1,15 @@
 <template>
-  <div id="app">
-    <button
-      id="signOut"
-      v-if="isUserLogged"
-      @click="signOutUser"
-    >
-      Sign out
-    </button>
+  <div id="app" class="container">
+    <side-bar v-if="isUserLogged" />
     <router-view/>
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
+import sideBar from './components/sideBar.vue';
 export default {
+  components: { sideBar },
   name: 'App',
   computed: {
     ...mapGetters([
@@ -23,10 +19,5 @@ export default {
       return this.getUser?.uid;
     }
   },
-  methods: {
-    ...mapActions([
-      'signOutUser',
-    ])
-  }
 }
 </script>

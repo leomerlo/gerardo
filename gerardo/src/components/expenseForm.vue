@@ -1,6 +1,6 @@
 <template>
-  <form
-      @submit.prevent="submitExpense"
+  <b-form
+    @submit.prevent="submitExpense"
     >
       <div
         class="formStatus"
@@ -8,73 +8,94 @@
       >
         {{ formError.message }}
       </div>
-      <div>
-        <label for="name">Nombre:</label>
-        <input
+      <b-alert variant="warning" v-if="expenseData.linked" show>Este gasto está linkeado con un gasto recurrente, al hacer cambios se desvincularán. Para editar y continuar vinculados, editá el gasto recurrente.</b-alert>
+      <b-form-group
+        :id="`input-group-${expenseData.id}-name-group`"
+        label="Nombre:"
+        :label-for="`input-group-${expenseData.id}-name`"
+      >
+        <b-form-input
           type="text"
           name="name"
-          id="name"
+          :id="`input-group-${expenseData.id}-name`"
           v-model="expenseData.name"
-          :disabled="expenseData.recurrentId"
+          :disabled="expenseData.linked"
           required
-        />
-      </div>
-      <div>
-        <label for="value">Valor:</label>
-        <input
+        ></b-form-input>
+      </b-form-group>
+      <b-form-group
+        :id="`input-group-${expenseData.id}-value-group`"
+        label="Valor:"
+        :label-for="`input-group-${expenseData.id}-value`"
+      >
+        <b-form-input
           type="number"
           name="value"
-          id="value"
+          :id="`input-group-${expenseData.id}-value`"
           v-model="expenseData.value"
           required
-        />
-      </div>
-      <div>
-        <label for="recurrent">Es gasto recurrente?</label>
-        <input
-          type="checkbox"
+        ></b-form-input>
+      </b-form-group>
+      <b-form-group
+        :id="`input-group-${expenseData.id}-recurrent-group`"
+        label="Es gasto recurrente?"
+        :label-for="`input-group-${expenseData.id}-recurrent`"
+      >
+        <b-form-checkbox
           name="recurrent"
-          id="recurrent"
+          :id="`input-group-${expenseData.id}-recurrent`"
           v-model="expenseData.recurrent"
-        />
-      </div>
-      <div v-if="!expenseData.recurrent">
-        <label for="month">Mes:</label>
-        <input
+          :disabled="expenseData.linked"
+        ></b-form-checkbox>
+      </b-form-group>
+      <b-form-group
+        :id="`input-group-${expenseData.id}-month-group`"
+        label="Mes:"
+        :label-for="`input-group-${expenseData.id}-month`"
+        v-if="!expenseData.recurrent"
+      >
+        <b-form-input
           type="number"
           name="month"
-          id="month"
+          :id="`input-group-${expenseData.id}-month`"
           v-model="expenseMonth"
           required
           max="12"
           min="1"
-        />
-      </div>
-      <div v-if="!expenseData.recurrent">
-        <label for="month">Año:</label>
-        <input
+        ></b-form-input>
+      </b-form-group>
+      <b-form-group
+        :id="`input-group-${expenseData.id}-year-group`"
+        label="Año:"
+        :label-for="`input-group-${expenseData.id}-year`"
+        v-if="!expenseData.recurrent"
+      >
+        <b-form-input
           type="number"
           name="year"
-          id="year"
+          :id="`input-group-${expenseData.id}-year`"
           v-model="expenseYear"
           required
-        />
-      </div>
-      <div
-        v-if="expenseData.disabled"
+          max="12"
+          min="1"
+        ></b-form-input>
+      </b-form-group>
+      <b-form-group
+        :id="`input-group-${expenseData.id}-disabled-group`"
+        label="Deshabilitado:"
+        :label-for="`input-group-${expenseData.id}-disabled`"
       >
-        <label for="disabled">Deshabilitado</label>
-        <input
-          type="checkbox"
+        <b-form-checkbox
           name="disabled"
-          id="disabled"
+          :id="`input-group-${expenseData.id}-disabled`"
           v-model="expenseData.disabled"
-        />
+        ></b-form-checkbox>
+      </b-form-group>
+      <div class="d-flex gap-2 mt-4">
+        <b-button variant="primary" type="submit">Guardar</b-button>
+        <b-button variant="light" @click="cancelEdit">Cancelar</b-button>
       </div>
-      <div>
-        <button type="submit">Enviar</button>
-      </div>
-    </form>
+    </b-form>
 </template>
 
 <script>
@@ -116,7 +137,6 @@ export default {
   },
   mounted() {
     this.setEditMode();
-    this.resetForm();
   },
   computed: {
     ...mapGetters([
@@ -197,10 +217,15 @@ export default {
     },
     setEditMode: function(){
       if (this.isEditMode) {
-        this.expenseData = {
-          ...this.expense,
-          id: this.expense.id
-        }
+        this.expenseData.name = this.expense.name;
+        this.expenseData.value = this.expense.value;
+        this.expenseData.year = this.expenseYear;
+        this.expenseData.month = this.expenseMonth;
+        this.expenseData.recurrentId = this.expense.recurrentId;
+        this.expenseData.recurrent = this.expense.recurrent;
+        this.expenseData.uid = this.expense.uid;
+        this.expenseData.linked = this.expense.linked;
+        this.expenseData.paid = this.expense.paid;
       }
     },
     resetForm: function() {
@@ -212,6 +237,10 @@ export default {
       this.expenseData.recurrent = false;
       this.expenseData.uid = false;
       this.expenseData.paid = false;     
+    },
+    cancelEdit: function() {
+      this.resetForm();
+      this.$emit('cancelEdit');
     }
   },
 }
