@@ -12,7 +12,7 @@
             v-if="expense.recurrentId || expense.month"
           />
           <span class="name">{{ expense.name }}</span>
-          <span class="value">${{ expense.value }}</span>
+          <span class="value">{{ formatCurrency(expense.value, 'ARS') }}</span>
         </div>
         <div class="d-flex gap-2 mt-2">
           <b-button v-if="expense.disabled" variant="icon" @click="enableExpense(expense)"><font-awesome-icon icon="fa-solid fa-toggle-off" /></b-button>
@@ -41,6 +41,7 @@
 import { mapGetters } from 'vuex';
 import moment from 'moment';
 import expenseForm from '@/components/expenseForm';
+import { currencyFormat } from '../utils/formatter';
 
 export default {
   name: "expenseListItem",
@@ -142,6 +143,9 @@ export default {
         throw new Error('There was an issue updating the expense dependencies', e);
       }
     },
+    formatCurrency: function(value, currency = 'USD') {
+      return currencyFormat(value, currency);
+    }
   },
 }
 </script>

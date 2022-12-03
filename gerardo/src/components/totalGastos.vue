@@ -2,13 +2,15 @@
   <div class="monthly-overview">
     <h2>Total de gastos:</h2>
     <div class="monthly-exchange">
-      <span class="pesos">{{ totalExpenses }}<span class="exchange">ARS</span></span>
-      <span class="dollars">{{ totalExpenses / totalExpensesConversion || 1 }}<span class="exchange">USD</span></span>
+      <span class="pesos">{{ 'AR' + currencyFormat(totalExpenses,'ARS') }}</span>
+      <span class="dollars">{{ currencyFormat(totalExpenses / totalExpensesConversion || 1) }}</span>
     </div>
   </div>
 </template>
 
 <script>
+import { currencyFormat } from '../utils/formatter';
+
 export default {
   props: {
     expenses: {
@@ -45,6 +47,9 @@ export default {
         return null;
       }
     },
+    currencyFormat(value, currency = 'USD') {
+      return currencyFormat(value, currency);
+    }
   },
   mounted() {
     this.getExchangeValues();
