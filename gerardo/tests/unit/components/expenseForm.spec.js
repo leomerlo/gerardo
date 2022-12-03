@@ -172,8 +172,8 @@ describe('expenseForm', () => {
               id: null,
               name: baseExpense.name,
               value: baseExpense.value,
-              month: 13,
-              recurrent: baseExpense.recurrent,
+              month: baseExpense.month,
+              recurrent: false,
               uid: 1,
             }
           }
@@ -184,8 +184,10 @@ describe('expenseForm', () => {
 
       wrapper.vm.expenseData.name = 'A';
       wrapper.vm.expenseData.value = '100';
+      wrapper.vm.expenseData.month = 13;
 
       wrapper.vm.addExpense();
+
       expect(wrapper.vm.formError.error).toBeTruthy();
       expect(wrapper.vm.formError.message).toEqual('El mes está fuera de rango');
     });
