@@ -1,9 +1,17 @@
 <template>
-  <div class="monthly-overview">
-    <h2>Total de gastos:</h2>
-    <div class="monthly-exchange">
-      <span class="pesos">{{ 'AR' + currencyFormat(totalExpenses,'ARS') }}</span>
-      <span class="dollars">{{ currencyFormat(totalExpenses / totalExpensesConversion || 1) }}</span>
+  <div class="spent-overview">
+    <div class="monthly-overview">
+      <h2>Total de gastos:</h2>
+      <div class="exchange">
+        <span class="pesos">{{ 'AR' + currencyFormat(totalExpenses,'ARS') }}</span>
+        <span class="dollars">{{ currencyFormat(totalExpenses / totalExpensesConversion || 1) }}</span>
+      </div>
+    </div>
+    <div class="yearly-overview">
+      <h3>Gasto acumulado:</h3>
+      <div class="exchange .h3">
+        <span class="pesos">{{ 'AR' + currencyFormat(yearly, 'ARS') }}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -15,6 +23,10 @@ export default {
   props: {
     expenses: {
       type: Array,
+      required: true,
+    },
+    yearly: {
+      type: Number,
       required: true,
     }
   },
@@ -58,31 +70,34 @@ export default {
 </script>
 
 <style lang="scss">
-  .monthly-overview {
-    padding: 29px;
-    border-radius: 20px;
+  .spent-overview {
+    padding: 1.8125rem;
+    border-radius: 1.25rem;
     color: #FFF;
     background: linear-gradient(180deg, #4E3BBA 0%, #725FDC 100%);
   }
 
   @media (min-width: 768px) {
-    .monthly-overview {
+    .monthly-overview,
+    .yearly-overview {
       display: flex;
-      justify-content: space-around;
+      justify-content: space-between;
       align-items: center;
 
-      .monthly-exchange {
+      .exchange {
         font-size: 64px;
 
         & > span {
           display: inline-block;
-          margin-bottom: 10px;
-          margin-right: 40px;
+          margin-bottom: .625rem;
+          margin-right: 2.5rem;
         }
+      }
+    }
 
-        .exchange {
-          font-size: 16px;
-        }
+    .yearly-overview {
+      .exchange {
+        font-size: 3.5rem;
       }
     }
   }
