@@ -10,7 +10,7 @@
     <div class="yearly-overview">
       <h3>Gasto acumulado:</h3>
       <div class="exchange .h3">
-        <span class="pesos">{{ 'AR' + currencyFormat(yearly, 'ARS') }}</span>
+        <span class="pesos">{{ 'AR' + currencyFormat(yearly, 'ARS') }} / {{ 'AR' + currencyFormat(remainderYear, 'ARS') }}</span>
       </div>
     </div>
   </div>
@@ -33,6 +33,9 @@ export default {
   data() {
     return {
       exchangeValues: null,
+      totalMonotributo: {
+        '2023': 5600000,
+      }
     }
   },
   computed: {
@@ -47,6 +50,12 @@ export default {
     },
     totalExpensesConversion: function(){
       return this.exchangeValues?.blue.value_sell;
+    },
+    remainderYear: function() {
+      return this.yearlyMonotributo - parseInt(this.yearly);
+    },
+    yearlyMonotributo: function() {
+      return this.totalMonotributo[this.$route?.params.year] | 0;
     }
   },
   methods: {
