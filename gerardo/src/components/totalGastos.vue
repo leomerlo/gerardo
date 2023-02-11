@@ -85,7 +85,7 @@ export default {
       align-items: center;
 
       .exchange {
-        font-size: 64px;
+        font-size: 3em;
 
         & > span {
           display: inline-block;
@@ -97,7 +97,7 @@ export default {
 
     .yearly-overview {
       .exchange {
-        font-size: 3.5rem;
+        font-size: 2em;
       }
     }
   }
