@@ -1,7 +1,7 @@
 <template>
   <div v-if="allExpenses.length > 0">
 
-    <total-gastos :expenses="expensesCurrentMonth"/>
+    <total-gastos :expenses="expensesCurrentMonth" :yearly="expensesYearValue"/>
 
     <div class="monthly-expenses">
 
@@ -87,10 +87,20 @@ export default {
     expensesCurrentMonth: function(){
       return this.expenseByMonth(this.$route?.params.month, this.$route?.params.year);
     },
+    expensesYearValue: function(){
+      const expenses = this.expenseByYear(this.$route?.params.month, this.$route?.params.year);
+      const initialValue = 0;
+      const value = expenses.reduce((accumulator, e) => accumulator + parseInt(e.value), initialValue);
+      return value;
+    },
   },
   methods: {
     expenseByMonth(month, year) {
       return this.nonRecurrentExpenses.filter((e) => ((parseInt(e.month) === parseInt(month)) && (parseInt(e.year) === parseInt(year))));
+    },
+    expenseByYear(month, year) {
+      // Expenses by year returns the expenses up to the provided month
+      return this.nonRecurrentExpenses.filter((e) => ((parseInt(e.month) <= parseInt(month)) && (parseInt(e.year) === parseInt(year))));
     },
     checkRecurrentExpenses(){
       if( this.month < parseInt(moment(new Date).format('M')) ) {
